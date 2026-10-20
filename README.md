@@ -102,4 +102,4 @@ For your own deploy: `wrangler d1 create chog-pet`, put the id in `wrangler.json
 
 ---
 
-<sub>Made by [@exitliq](https://x.com/exitliq) · tremolyoung@gmail.com<br>Independent fan project, not affiliated with Chog or Monad. Chog Genesis art belongs to its creators and holders.</sub>
+<sub>Made by [@exitliqfun](https://x.com/exitliqfun) · tremolyoung@gmail.com<br>Independent fan project, not affiliated with Chog or Monad. Chog Genesis art belongs to its creators and holders.</sub>
