@@ -1033,7 +1033,8 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .g-trailer:hover { color: #fff; }
 
 /* ===== trailer: a still with a play button, YouTube loads on tap ===== */
-.trailer { position: relative; z-index: 1; max-width: 880px; margin: 34px auto 0; padding: 0 24px; }
+.trailer { position: relative; z-index: 1; max-width: 1332px; margin: 40px auto 8px; padding: 0 24px; }
+.tr-video { max-width: 832px; margin: 0 auto; }
 .tr-video { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; box-shadow: 0 0 0 2px var(--line), 0 6px 0 var(--shade); }
 .tr-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .tr-play { position: absolute; inset: 0; padding: 0; border: 0; background: none; cursor: pointer; }
@@ -1044,5 +1045,41 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .tr-play:hover .tr-btn { transform: translateY(-2px); }
 .tr-play:active .tr-btn { transform: translateY(3px); box-shadow: 0 2px 0 #8a1f57, inset 0 0 0 3px rgba(255, 255, 255, 0.25); }
 .tr-play:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
-@media (max-width: 900px) { @media (max-width: 700px) { .trailer { padding: 0 16px; } }
+@media (max-width: 700px) { .trailer { padding: 0 16px; } }
 @media (max-width: 460px) { .tr-btn { width: 72px; height: 50px; margin: -25px 0 0 -36px; } .tr-btn::after { border-width: 11px 0 11px 19px; margin: -11px 0 0 -7px; } }
+
+/* the cinema: marquee with chasing bulbs */
+.tr-sign { position: relative; width: fit-content; margin: 0 auto 20px; padding: 18px 40px 16px; border-radius: 10px; background: #1a1238; box-shadow: 0 0 0 3px #6b4cff, 0 6px 0 var(--shade), 0 0 28px rgba(255, 216, 77, 0.18); text-align: center; }
+.tr-sign::before { content: ""; position: absolute; inset: 5px; border-radius: 7px; pointer-events: none;
+  background:
+    radial-gradient(circle, #ffd84d 0 2.5px, transparent 3px) 0 0 / 16px 6px repeat-x,
+    radial-gradient(circle, #ffd84d 0 2.5px, transparent 3px) 0 100% / 16px 6px repeat-x;
+  -webkit-mask: linear-gradient(#000 0 6px, transparent 6px calc(100% - 6px), #000 calc(100% - 6px));
+  mask: linear-gradient(#000 0 6px, transparent 6px calc(100% - 6px), #000 calc(100% - 6px));
+  animation: tr-chase 0.9s steps(2) infinite; }
+@keyframes tr-chase { to { background-position: 16px 0, -16px 100%; } }
+.tr-sign b { display: block; margin: 8px 0 8px; font: 700 30px/1 var(--pix); letter-spacing: 3px; color: #ffe9a8; text-shadow: 0 3px 0 #ff4fa0, 0 0 18px rgba(255, 216, 77, 0.45); }
+.tr-now { display: block; font: 400 11px/1 var(--mono); letter-spacing: 3px; text-transform: uppercase; color: #9ff0d0; }
+.tr-sign .tr-now:last-child { color: #cfc4ff; }
+
+/* the audience on the sides, looking at the screen */
+.tr-crowd { position: absolute; bottom: 0; width: calc((100% - 832px) / 2 - 44px); display: flex; align-items: flex-end; justify-content: center; gap: 8px; pointer-events: none; }
+.tr-l { left: 24px; }
+.tr-r { right: 24px; }
+.tr-fan { position: relative; display: block; pointer-events: auto; animation: tr-bob 2.4s ease-in-out var(--d, 0s) infinite; }
+.tr-fan img { display: block; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #6b4cff, 0 6px 0 5px var(--shade); background: #fff; }
+.tr-fan:hover img { box-shadow: 0 0 0 3px #ffd84d, 0 0 0 5px #6b4cff, 0 6px 0 5px var(--shade); }
+.tr-fan.f0 { width: 62px; margin-bottom: 44px; }
+.tr-fan.f1 { width: 82px; margin-bottom: 6px; }
+.tr-fan.f2 { width: 66px; margin-bottom: 70px; }
+.tr-r .tr-fan.f0 { margin-bottom: 58px; }
+.tr-r .tr-fan.f2 { margin-bottom: 34px; }
+@keyframes tr-bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(var(--tilt, 2deg)); } }
+.tr-l .tr-fan { --tilt: 3deg; }
+.tr-r .tr-fan { --tilt: -3deg; }
+/* while the trailer plays: hearts float up from the crowd */
+.trailer.playing .tr-fan::after { content: "\2665"; position: absolute; left: 50%; top: -6px; color: #ff4fa0; font: 400 20px/1 var(--mono); text-shadow: 0 2px 0 var(--shade); opacity: 0; animation: tr-heart 2.6s ease-out var(--d, 0s) infinite; }
+@keyframes tr-heart { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.6); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -46px) scale(1.15); } }
+@media (max-width: 1180px) { .tr-crowd { display: none; } }
+@media (max-width: 520px) { .tr-sign { padding: 12px 22px 10px; } .tr-sign b { font-size: 22px; } .tr-now { font-size: 10px; letter-spacing: 2px; } }
+@media (prefers-reduced-motion: reduce) { .tr-sign::before, .tr-fan, .trailer.playing .tr-fan::after { animation: none; } }
