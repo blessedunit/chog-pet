@@ -4,13 +4,14 @@ const sec = document.getElementById("trailer");
 const box = document.getElementById("trVideo");
 
 // the audience: #953 (token 1462) plus 5 picked from a hand-checked pool (token ids; some hats carry words we don't want here)
-const POOL = [309, 1942, 149, 1040, 1292, 127, 99, 177, 870, 144];
+const POOL = [309, 1942, 149, 1040, 1292, 127, 99, 177, 870, 144, 186, 1864, 122, 1682];
 function seat() {
-  const all = [1462, ...POOL.sort(() => Math.random() - 0.5).slice(0, 5)].sort(() => Math.random() - 0.5);
-  [["trCrowdL", all.slice(0, 3)], ["trCrowdR", all.slice(3)]].forEach(([el, row]) => {
+  const all = [1462, ...POOL.sort(() => Math.random() - 0.5).slice(0, 9)].sort(() => Math.random() - 0.5);
+  const twinkles = '<i class="tr-tw t0">✦</i><i class="tr-tw t1">✦</i><i class="tr-tw t2">✦</i>';
+  [["trCrowdL", all.slice(0, 5)], ["trCrowdR", all.slice(5)]].forEach(([el, row]) => {
     document.getElementById(el).innerHTML = row
       .map((id, i) => `<a class="tr-fan f${i}" href="/?token=${id}" style="--d:${(Math.random() * 2).toFixed(2)}s" aria-label="Visit this Chog"><img src="/chogs/${id}.webp" alt="" loading="lazy" decoding="async" width="96" height="96" /></a>`)
-      .join("");
+      .join("") + twinkles;
   });
 }
 

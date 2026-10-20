@@ -1062,18 +1062,32 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .tr-now { display: block; font: 400 11px/1 var(--mono); letter-spacing: 3px; text-transform: uppercase; color: #9ff0d0; }
 .tr-sign .tr-now:last-child { color: #cfc4ff; }
 
-/* the audience on the sides, looking at the screen */
-.tr-crowd { position: absolute; bottom: 0; width: calc((100% - 832px) / 2 - 44px); display: flex; align-items: flex-end; justify-content: center; gap: 8px; pointer-events: none; }
+/* the audience on the sides: a back row and a front row, a few twinkles above */
+.tr-crowd { position: absolute; bottom: 0; height: 468px; width: calc((100% - 832px) / 2 - 44px); pointer-events: none; }
 .tr-l { left: 24px; }
 .tr-r { right: 24px; }
-.tr-fan { position: relative; display: block; pointer-events: auto; animation: tr-bob 2.4s ease-in-out var(--d, 0s) infinite; }
+.tr-fan { position: absolute; display: block; pointer-events: auto; animation: tr-bob 2.4s ease-in-out var(--d, 0s) infinite; }
 .tr-fan img { display: block; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #6b4cff, 0 6px 0 5px var(--shade); background: #fff; }
 .tr-fan:hover img { box-shadow: 0 0 0 3px #ffd84d, 0 0 0 5px #6b4cff, 0 6px 0 5px var(--shade); }
-.tr-fan.f0 { width: 62px; margin-bottom: 44px; }
-.tr-fan.f1 { width: 82px; margin-bottom: 6px; }
-.tr-fan.f2 { width: 66px; margin-bottom: 70px; }
-.tr-r .tr-fan.f0 { margin-bottom: 58px; }
-.tr-r .tr-fan.f2 { margin-bottom: 34px; }
+/* back row: small, higher up */
+.tr-fan.f3 { width: 52px; left: 14%; bottom: 150px; opacity: 0.92; }
+.tr-fan.f4 { width: 56px; left: 58%; bottom: 168px; opacity: 0.92; }
+/* front row */
+.tr-fan.f0 { width: 62px; left: 0; bottom: 44px; }
+.tr-fan.f1 { width: 82px; left: 32%; bottom: 6px; z-index: 1; }
+.tr-fan.f2 { width: 66px; right: 0; bottom: 70px; }
+.tr-r .tr-fan.f0 { bottom: 66px; }
+.tr-r .tr-fan.f2 { bottom: 38px; }
+.tr-r .tr-fan.f3 { left: 22%; bottom: 172px; }
+.tr-r .tr-fan.f4 { left: 64%; bottom: 146px; }
+.tr-tw { position: absolute; font-style: normal; font: 400 14px/1 var(--mono); color: #fff; opacity: 0.2; animation: tr-tw 3.2s ease-in-out infinite; }
+.tr-tw.t0 { left: 8%; bottom: 330px; color: #9ff0d0; }
+.tr-tw.t1 { left: 62%; bottom: 390px; font-size: 18px; color: #ffe9a8; animation-delay: 1.1s; }
+.tr-tw.t2 { left: 36%; bottom: 270px; font-size: 11px; animation-delay: 2.1s; }
+.tr-r .tr-tw.t0 { left: 78%; bottom: 360px; }
+.tr-r .tr-tw.t1 { left: 24%; bottom: 300px; }
+.tr-r .tr-tw.t2 { left: 56%; bottom: 410px; }
+@keyframes tr-tw { 0%, 100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.95; transform: scale(1.15); } }
 @keyframes tr-bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(var(--tilt, 2deg)); } }
 .tr-l .tr-fan { --tilt: 3deg; }
 .tr-r .tr-fan { --tilt: -3deg; }
@@ -1082,4 +1096,4 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 @keyframes tr-heart { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.6); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -46px) scale(1.15); } }
 @media (max-width: 1180px) { .tr-crowd { display: none; } }
 @media (max-width: 520px) { .tr-sign { padding: 12px 22px 10px; } .tr-sign b { font-size: 22px; } .tr-now { font-size: 10px; letter-spacing: 2px; } }
-@media (prefers-reduced-motion: reduce) { .tr-sign::before, .tr-fan, .trailer.playing .tr-fan::after { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .tr-sign::before, .tr-fan, .tr-tw, .trailer.playing .tr-fan::after { animation: none; } }
