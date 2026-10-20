@@ -1062,31 +1062,18 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .tr-now { display: block; font: 400 11px/1 var(--mono); letter-spacing: 3px; text-transform: uppercase; color: #9ff0d0; }
 .tr-sign .tr-now:last-child { color: #cfc4ff; }
 
-/* the audience on the sides: a back row and a front row, a few twinkles above */
-.tr-crowd { position: absolute; bottom: 0; height: 468px; width: calc((100% - 832px) / 2 - 44px); pointer-events: none; }
-.tr-l { left: 24px; }
-.tr-r { right: 24px; }
-.tr-fan { position: absolute; display: block; pointer-events: auto; animation: tr-bob 2.4s ease-in-out var(--d, 0s) infinite; }
+/* the audience on the sides: seats come from trailer.js as --x (from the outer edge), --b (bottom), --w (size) */
+.tr-crowd { position: absolute; bottom: 0; height: 500px; width: calc((100% - 832px) / 2 - 40px); pointer-events: none; }
+.tr-l { left: 14px; }
+.tr-r { right: 14px; }
+.tr-fan { position: absolute; bottom: var(--b); width: var(--w); display: block; pointer-events: auto; animation: tr-bob 2.6s ease-in-out var(--d, 0s) infinite; }
+.tr-l .tr-fan, .tr-l .tr-tw { left: min(var(--x), calc(100% - var(--w, 16px))); }
+.tr-r .tr-fan, .tr-r .tr-tw { right: min(var(--x), calc(100% - var(--w, 16px))); }
 .tr-fan img { display: block; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #6b4cff, 0 6px 0 5px var(--shade); background: #fff; }
 .tr-fan:hover img { box-shadow: 0 0 0 3px #ffd84d, 0 0 0 5px #6b4cff, 0 6px 0 5px var(--shade); }
-/* back row: small, higher up */
-.tr-fan.f3 { width: 52px; left: 14%; bottom: 150px; opacity: 0.92; }
-.tr-fan.f4 { width: 56px; left: 58%; bottom: 168px; opacity: 0.92; }
-/* front row */
-.tr-fan.f0 { width: 62px; left: 0; bottom: 44px; }
-.tr-fan.f1 { width: 82px; left: 32%; bottom: 6px; z-index: 1; }
-.tr-fan.f2 { width: 66px; right: 0; bottom: 70px; }
-.tr-r .tr-fan.f0 { bottom: 66px; }
-.tr-r .tr-fan.f2 { bottom: 38px; }
-.tr-r .tr-fan.f3 { left: 22%; bottom: 172px; }
-.tr-r .tr-fan.f4 { left: 64%; bottom: 146px; }
-.tr-tw { position: absolute; font-style: normal; font: 400 14px/1 var(--mono); color: #fff; opacity: 0.2; animation: tr-tw 3.2s ease-in-out infinite; }
-.tr-tw.t0 { left: 8%; bottom: 330px; color: #9ff0d0; }
-.tr-tw.t1 { left: 62%; bottom: 390px; font-size: 18px; color: #ffe9a8; animation-delay: 1.1s; }
-.tr-tw.t2 { left: 36%; bottom: 270px; font-size: 11px; animation-delay: 2.1s; }
-.tr-r .tr-tw.t0 { left: 78%; bottom: 360px; }
-.tr-r .tr-tw.t1 { left: 24%; bottom: 300px; }
-.tr-r .tr-tw.t2 { left: 56%; bottom: 410px; }
+.tr-tw { position: absolute; bottom: var(--b); font-style: normal; font-family: var(--mono); line-height: 1; color: #fff; opacity: 0.2; animation: tr-tw 3.2s ease-in-out infinite; }
+.tr-tw:nth-of-type(3n + 1) { color: #9ff0d0; }
+.tr-tw:nth-of-type(3n + 2) { color: #ffe9a8; }
 @keyframes tr-tw { 0%, 100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.95; transform: scale(1.15); } }
 @keyframes tr-bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(var(--tilt, 2deg)); } }
 .tr-l .tr-fan { --tilt: 3deg; }
