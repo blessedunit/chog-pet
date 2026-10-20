@@ -1,0 +1,14 @@
+{
+  "name": "chog-pet",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx wrangler@4 dev --local --port 8790",
+    "deploy": "npx wrangler@4 deploy"
+  },
+  "dependencies": {
+    "@noble/curves": "1.9.7",
+    "@noble/hashes": "1.8.0"
+  }
+}

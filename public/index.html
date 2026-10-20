@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Chog Pet</title>
+  <meta name="description" content="A tamagotchi for every Chog Genesis NFT on Monad. Feed it, play with it, put it to bed. Its age is how long you've held it." />
+  <meta name="theme-color" content="#0e091c" />
+  <link rel="icon" type="image/png" href="/icon.png?v=2" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Chog Pet" />
+  <meta property="og:url" content="https://chogpet.xyz/" />
+  <meta property="og:title" content="Chog Pet" />
+  <meta property="og:description" content="A tamagotchi for every Chog Genesis NFT on Monad. Independent fan project." />
+  <meta property="og:image" content="https://chogpet.xyz/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Chog Pet: a tamagotchi for every Chog Genesis NFT" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chog Pet" />
+  <meta name="twitter:description" content="A tamagotchi for every Chog Genesis NFT on Monad. Independent fan project." />
+  <meta name="twitter:image" content="https://chogpet.xyz/og.png" />
+  <meta name="twitter:image:alt" content="Chog Pet: a tamagotchi for every Chog Genesis NFT" />
+  <script>try{var q=location.search;if(!/[?&]intro=0/.test(q)&&(!navigator.webdriver||/[?&]intro=(1|short)/.test(q)))document.documentElement.classList.add("intro-boot")}catch(e){}</script>
+  <link rel="preload" href="/fonts/Silkscreen-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/Silkscreen-700.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/css/pet.css" />
+  <link rel="stylesheet" href="/css/intro.css" />
+  <link rel="stylesheet" href="/css/quests.css" />
+  <link rel="stylesheet" href="/css/chat.css" />
+  <link rel="stylesheet" href="/css/tour.css" />
+  <link rel="stylesheet" href="/css/fx.css" />
+  <link rel="stylesheet" href="/css/shop.css" />
+  <link rel="stylesheet" href="/css/skyline.css" />
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+
+  <header class="top">
+    <a class="logo" href="/" aria-label="Chog Pet home">
+      <img class="logo-img" src="/icon.png?v=2" alt="" width="36" height="36" />
+      <span class="logo-t">CHOG<i>·</i>PET</span>
+    </a>
+    <p class="tag">a tamagotchi for every Chog Genesis NFT</p>
+    <nav class="pins pins-top" id="pinsTop" aria-label="My sitters" hidden></nav>
+    <div class="top-r">
+      <div id="candleRoot"></div>
+      <button class="ghost-btn help-btn" id="helpBtn" aria-label="How to play">?</button>
+      <button class="ghost-btn" id="mute" aria-label="Sound on/off"></button>
+      <div class="wal">
+        <button class="pill-btn" id="walletBtn" aria-haspopup="menu" aria-expanded="false">Sign in</button>
+        <div class="wal-menu" id="walMenu" role="menu" hidden>
+          <div class="wal-addr" id="walAddr"></div>
+          <button role="menuitem" id="walMine">My Chogs</button>
+          <button role="menuitem" id="walCopy">Copy address</button>
+          <button role="menuitem" id="walOut" class="danger">Disconnect</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="stage">
+    <!-- left: find a Chog -->
+    <aside class="col col-l">
+      <section class="panel find">
+        <h2>Find a Chog</h2>
+        <form id="findForm" class="find-row" autocomplete="off">
+          <input id="findIn" inputmode="text" placeholder="Chog # or wallet 0x…" aria-label="Chog number or wallet" />
+          <button class="go" type="submit">Go</button>
+        </form>
+        <div class="find-actions">
+          <button class="chip-btn" id="randomBtn">Random Chog</button>
+          <button class="chip-btn" id="mineBtn" hidden>My Chogs</button>
+        </div>
+        <div id="findMsg" class="muted small"></div>
+        <div id="results" class="thumbs"></div>
+      </section>
+
+      <section class="panel town-p">
+        <h2>Chogtown <span class="h-note">1,969 pets</span></h2>
+        <div class="town-map" id="townMap">
+          <div class="town-bar" id="townBar"><div class="tb-line sk-shim"></div></div>
+          <div class="town-tabs" id="townTabs" role="tablist" aria-label="Chogtown"><button role="tab" data-k="help" aria-selected="true" class="on" disabled><i class="td td-help" aria-hidden="true"></i>Need you<span>…</span></button><button role="tab" data-k="moved" aria-selected="false" class="" disabled><i class="td td-moved" aria-hidden="true"></i>New homes<span>…</span></button><button role="tab" data-k="happy" aria-selected="false" class="" disabled><i class="td td-happy" aria-hidden="true"></i>Happy<span>…</span></button><button role="tab" data-k="quiet" aria-selected="false" class="" disabled><i class="td td-quiet" aria-hidden="true"></i>Not met<span>…</span></button></div>
+          <div class="town-scroll" id="townScroll">
+            <div class="town-grid" id="townGrid" aria-busy="true"><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div><div class="tc tc-sk" aria-hidden="true"><i class="sk-shim"></i><span>&nbsp;</span></div></div>
+            <button class="chip-btn town-more" id="townMore" hidden></button>
+          </div>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- centre: the device -->
+    <section class="col col-c">
+      <nav class="pins pins-strip" id="pinsStrip" aria-label="My sitters" hidden></nav>
+      <div class="strip" id="strip" aria-live="polite"></div>
+      <div class="device-wrap">
+        <div class="device" id="device" data-tier="Common">
+          <div class="ring" aria-hidden="true"><span></span></div>
+          <div class="shell">
+            <div class="bezel">
+              <div class="icons" id="iconsTop"></div>
+              <div class="lcd" id="lcd">
+                <canvas id="art" class="art" aria-hidden="true"></canvas>
+                <canvas id="scr" width="128" height="128" aria-label="Your Chog pet"></canvas>
+                <div class="lcd-grid" aria-hidden="true"></div>
+                <div class="lcd-gloss" aria-hidden="true"></div>
+                <div class="speech" id="speech" role="status" aria-live="polite"></div>
+                <div class="menu" id="menu" hidden></div>
+              </div>
+              <div class="meters" id="meters"></div>
+              <div class="icons" id="iconsBot"></div>
+            </div>
+            <div class="pad" id="pad" hidden>
+              <button class="key" data-key="a" aria-label="Move left"></button>
+              <button class="pad-quit" id="padQuit">Quit</button>
+              <button class="key" data-key="c" aria-label="Move right"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="hint" id="hint"></p>
+      <section class="quests" id="quests" aria-label="Today" hidden></section>
+    </section>
+
+    <!-- right: about this pet -->
+    <aside class="col col-r">
+      <section class="panel pet-card side" id="petCard">
+        <div class="pc-head">
+          <img id="pcThumb" class="pc-thumb" alt="" width="64" height="64" />
+          <div class="pc-names">
+            <div class="pc-name" id="pcName"><span class="sk-line sk-shim" style="width:7em">&nbsp;</span></div>
+            <div class="pc-subrow"><span class="pc-sub" id="pcSub">&nbsp;</span><span class="pc-bond" id="pcBond" hidden></span></div>
+          </div>
+          <span class="tier" id="pcTier"></span>
+        </div>
+        <div class="side-tabs" role="tablist" aria-label="About this Chog">
+          <button role="tab" class="on" data-tab="pet" aria-selected="true">Pet</button>
+          <button role="tab" data-tab="book" aria-selected="false">Stickers <b id="pcStickN"></b></button>
+          <button role="tab" data-tab="log" aria-selected="false">Visitors <b id="logN"></b></button>
+        </div>
+        <div class="tabp" data-tab="pet" role="tabpanel">
+          <div class="pc-status" id="pcMood"><div class="st-top"><span class="mood sk-shim sk-chip">&nbsp;</span><span class="st-need">&nbsp;</span></div><div class="st-wl"><span>Wellbeing</span><span class="st-bar"><i style="width:0"></i></span><b class="st-wb sk-txt">–</b></div></div>
+          <div class="home" id="pcHome"><div class="days sk-txt">–<small>days home</small></div><div class="home-l"><div class="age"><span class="pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="nw sk-line sk-shim">&nbsp;</span></div><div class="owner sk-txt">with …</div></div></div>
+          <div class="pc-mini" id="pcMini"><div class="mini"><b class="sk-txt">–</b><span>Flame</span></div><div class="mini"><b class="sk-txt">–</b><span>Cared</span></div><div class="mini"><b class="sk-txt">–</b><span>Record</span></div></div>
+          <div class="persona">
+            <div class="persona-t" id="pcPersona">&nbsp;</div>
+            <ul class="quirks" id="pcQuirks"><li class="sk-shim" style="width:6em">&nbsp;</li><li class="sk-shim" style="width:7.5em">&nbsp;</li><li class="sk-shim" style="width:6.5em">&nbsp;</li><li class="sk-shim" style="width:8em">&nbsp;</li><li class="sk-shim" style="width:5.5em">&nbsp;</li></ul>
+          </div>
+          <div class="pc-recent" id="pcRecent"></div>
+          <div class="pc-traits" id="pcTraitsMini"><div class="pt-h">Rarest traits</div><div class="pt-i"><span class="tk sk-txt">–</span><span class="tv">&nbsp;</span><span class="tp">&nbsp;</span></div><div class="pt-i"><span class="tk sk-txt">–</span><span class="tv">&nbsp;</span><span class="tp">&nbsp;</span></div><div class="pt-i"><span class="tk sk-txt">–</span><span class="tv">&nbsp;</span><span class="tp">&nbsp;</span></div></div>
+        </div>
+        <div class="tabp" data-tab="book" role="tabpanel" hidden>
+          <div class="book"><div class="stickers" id="pcStick"></div></div>
+          <details class="traits" id="pcTraits" open>
+            <summary>Traits <span class="muted" id="pcRare"></span></summary>
+            <ul id="pcTraitList"></ul>
+          </details>
+        </div>
+        <div class="tabp" data-tab="log" role="tabpanel" hidden>
+          <div id="since" class="since" hidden></div>
+          <div id="log" class="log"></div>
+          <div id="pastPanel" class="past" hidden>
+            <h3>Past homes</h3>
+            <div id="past" class="log"></div>
+          </div>
+        </div>
+        <div class="pc-actions">
+          <button class="pill-btn" id="shareBtn">Share</button>
+          <a class="pill-btn alt" id="xBtn" target="_blank" rel="noopener">Post on X</a>
+          <button class="pill-btn alt" id="nameBtn" hidden>Name it</button>
+          <button class="pill-btn alt pc-pin" id="pinBtn" type="button" aria-pressed="false" aria-label="Pin this Chog"></button>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <section class="nightcity" id="skyline" aria-label="Chogtown after dark"></section>
+
+  <section class="coll" id="coll" aria-label="The collection">
+    <div class="coll-head">
+      <h2>Chog Genesis</h2>
+    </div>
+    <div class="tiles" id="tiles"></div>
+    <div class="coll-cols">
+      <section class="panel">
+        <h2>Hall of Lifers</h2>
+        <div id="lifers" class="list"></div>
+      </section>
+      <section class="panel">
+        <h2>Just moved in</h2>
+        <div id="moves" class="list"></div>
+      </section>
+      <section class="panel">
+        <h2>Live in Chogtown <span class="h-note live">now</span></h2>
+        <div id="live" class="list live-list"></div>
+        <h2 class="h2-sub">Candle Catch records</h2>
+        <div id="records" class="list"></div>
+      </section>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="foot-in">
+      <div class="foot-brand">
+        <a class="logo" href="/" aria-label="Chog Pet home"><img src="/icon.png?v=2" alt="" width="32" height="32" /><span class="logo-t">CHOG<i>·</i>PET</span></a>
+        <p>A tamagotchi for every Chog Genesis NFT. Anyone can babysit; its age is how long its holder has kept it.</p>
+      </div>
+      <nav class="foot-col" aria-label="Chog Pet">
+        <h3>Chog Pet</h3>
+        <a href="/guide#about">About</a>
+        <a href="/guide#play">How to play</a>
+        <a href="/guide">Docs</a>
+        <a href="/guide#faq">FAQ</a>
+      </nav>
+      <nav class="foot-col" aria-label="The collection">
+        <h3>Collection</h3>
+        <a href="https://opensea.io/collection/chog-genesis" target="_blank" rel="noopener">Chog Genesis on OpenSea ↗</a>
+        <a href="https://chog.xyz" target="_blank" rel="noopener">chog.xyz ↗</a>
+        <a href="https://x.com/ChogNFT" target="_blank" rel="noopener">@ChogNFT on X ↗</a>
+        <a href="https://www.geckoterminal.com/monad/tokens/0x350035555e10d9afaf1566aaebfced5ba6c27777" target="_blank" rel="noopener">$CHOG chart ↗</a>
+      </nav>
+    </div>
+    <p class="fine">Fan project, not affiliated with Chog or Monad. Reads Monad; never asks you to send a transaction. No rewards for playing.</p>
+  </footer>
+
+  <div id="shopRoot"></div>
+  <div id="chatRoot"></div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <dialog id="nameDlg" class="dlg">
+    <form method="dialog">
+      <h3>Name your Chog</h3>
+      <input id="nameIn" maxlength="16" placeholder="e.g. Mochi" />
+      <div class="dlg-row"><button value="cancel" class="pill-btn alt">Cancel</button><button value="ok" class="pill-btn" id="nameOk">Save</button></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/js/scene.js"></script>
+  <script type="module" src="/js/shell.js"></script>
+  <script type="module" src="/js/main.js"></script>
+  <script type="module" src="/js/quests.js"></script>
+  <script type="module" src="/js/chat.js"></script>
+  <script type="module" src="/js/fx.js"></script>
+  <script type="module" src="/js/shop.js"></script>
+  <script type="module" src="/js/skyline.js"></script>
+</body>
+</html>

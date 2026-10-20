@@ -1,0 +1,18 @@
+// Chog Pet: static site in public/ + API worker. Run wrangler ONLY from this folder.
+// Local: npx wrangler@4 dev --local --port 8790 (D1 lives in .wrangler/, no account needed).
+// Prod: wrangler d1 create chog-pet -> put the id below, wrangler secret put SECRET,
+// the custom domain chogpet.xyz is set below.
+{
+  "name": "chog-pet",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "public", "binding": "ASSETS", "run_worker_first": ["/", "/api/*", "/chogs/*"] },
+  "d1_databases": [{ "binding": "DB", "database_name": "chog-pet", "database_id": "d65a5b93-d1e2-4b69-aa37-4a76bdf483f5" }],
+  // per-IP limit on every POST (actions, tickets, sign-in): 40 a minute is plenty for a person
+  "ratelimits": [{ "name": "RL", "namespace_id": "1969", "simple": { "limit": 40, "period": 60 } }],
+  // Privy app id (public, not a secret). Empty = sign-in only through a wallet built into the browser.
+  "vars": { "PRIVY_APP_ID": "cmv9crng3032a0gjvb5iqf4rz" },
+  // the site lives on chogpet.xyz (DNS on Cloudflare)
+  "routes": [{ "pattern": "chogpet.xyz", "custom_domain": true }],
+  "workers_dev": false
+}

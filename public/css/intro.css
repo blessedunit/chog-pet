@@ -1,0 +1,56 @@
+/* Arrival intro (js/intro.js). Everything here is prefixed .intro. */
+
+/* Cover the page from the first paint until the intro has drawn its first frame.
+   <html class="intro-boot"> is set by a tiny inline script in <head>; if JS never runs, the cover lifts by itself. */
+html.intro-boot body::after {
+  content: ""; position: fixed; inset: 0; z-index: 2147483646; background: #0e091c; pointer-events: none;
+  animation: intro-boot-out 0.3s steps(3) 4.2s forwards;
+}
+@keyframes intro-boot-out { to { opacity: 0; visibility: hidden; } }
+
+.intro {
+  position: fixed; inset: 0; z-index: 2147483000; overflow: hidden;
+  background: #0e091c; touch-action: none; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent; cursor: pointer; contain: strict;
+}
+.intro.intro--on { background: transparent; }
+.intro.intro--go { cursor: default; pointer-events: none; }
+.intro-cv {
+  position: absolute; left: 0; top: 0; display: block;
+  image-rendering: pixelated; image-rendering: crisp-edges; will-change: transform;
+}
+
+.intro-brand {
+  position: absolute; left: 0; right: 0; top: max(7vh, 28px); text-align: center; pointer-events: none;
+  font: 700 22px/1 var(--pix, "Silkscreen"), monospace; letter-spacing: 4px; color: #f5f0ff;
+  text-shadow: 3px 3px 0 #0e091c;
+}
+.intro-brand i { font-style: normal; color: #ff8ee4; margin: 0 2px; }
+
+.intro-cta {
+  position: absolute; left: 16px; right: 16px; text-align: center; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.25s steps(3), transform 0.25s steps(3);
+}
+.intro-cta b {
+  font: 400 18px/1.2 var(--pix, "Silkscreen"), monospace; letter-spacing: 2px; text-transform: uppercase; color: #ffd84d;
+  text-shadow: 3px 3px 0 #0e091c;
+  animation: intro-blink 1s steps(1) infinite;
+}
+.intro-cta span {
+  font: 400 13px/1.3 var(--mono, "Departure Mono"), ui-monospace, monospace; letter-spacing: 1px; color: #ddd7fe;
+  text-shadow: 2px 2px 0 #0e091c;
+}
+.intro--ready .intro-cta { opacity: 1; transform: none; }
+.intro--go .intro-cta, .intro--go .intro-brand { opacity: 0; transition: opacity 0.15s steps(2); }
+@keyframes intro-blink { 0%, 70% { opacity: 1; } 71%, 100% { opacity: 0.25; } }
+
+@media (max-width: 699px) {
+  .intro-brand { font-size: 18px; letter-spacing: 3px; top: max(6vh, 22px); }
+  .intro-cta b { font-size: 15px; letter-spacing: 1px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-cta b { animation: none; }
+  .intro-cta { transition: none; }
+}

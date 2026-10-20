@@ -1,0 +1,11 @@
+node_modules/
+.wrangler/
+.wrangler-dev.log
+.dev.vars
+# built from privy/ by `npm run build` (React + Privy, ~6 MB)
+public/js/privy/
+# local working notes and design refs
+NOTES.md
+CHAT-BRIEF.md
+tools/shots/
+tools/*.pdf

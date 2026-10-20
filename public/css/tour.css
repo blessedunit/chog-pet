@@ -1,0 +1,43 @@
+/* Chog Pet: the newcomer tour (js/tour.js). A dim layer with a cut-out, a blinking pixel ring, one small card. */
+.tour { position: fixed; inset: 0; z-index: 95; }
+.tour-dim { position: absolute; inset: 0; width: 100%; height: 100%; }
+.tour-dim > rect { fill: rgba(7, 3, 18, 0.76); }
+.tour-ring {
+  position: absolute; border-radius: 12px; pointer-events: none;
+  box-shadow: 0 0 0 2px #ffd84d, 0 0 0 6px rgba(255, 216, 77, 0.16);
+  animation: tourRing 1.2s steps(2) infinite;
+}
+.tour-ring.multi { box-shadow: 0 0 0 2px rgba(255, 216, 77, 0.55); border: 0; }
+.tour-ring.egg { border-radius: 50%; }
+@keyframes tourRing { 50% { box-shadow: 0 0 0 2px #ff8ee4, 0 0 0 6px rgba(255, 142, 228, 0.18); } }
+.tour-card {
+  position: absolute; width: min(320px, calc(100vw - 24px)); padding: 12px 14px;
+  background: #1b1140; color: #f5f0ff; border: 2px solid #6e54ff; border-radius: 10px;
+  box-shadow: 0 4px 0 #07040f, 0 18px 40px rgba(5, 2, 15, 0.55);
+  font: 400 13px/1.45 var(--font-ui, "Departure Mono", monospace);
+}
+.tour-card.pop { animation: tourPop 0.18s steps(3); }
+@keyframes tourPop { from { transform: translateY(6px); opacity: 0.4; } }
+.tour-top { display: flex; align-items: baseline; gap: 8px; }
+.tour-top b { font: 700 15px/1.1 var(--font-title, "Silkscreen", monospace); color: #ffd84d; letter-spacing: 0.5px; }
+.tour-n { margin-left: auto; font: 400 12px/1 var(--font-num, monospace); color: #8f87ad; }
+.tour-card p { margin: 7px 0 12px; font-size: 14px; color: #ece7ff; }
+.tour-row { display: flex; align-items: center; gap: 6px; }
+.tour-dots { display: flex; gap: 4px; margin-right: auto; }
+.tour-dots i { width: 6px; height: 6px; background: #3a2c70; }
+.tour-dots i.on { width: 14px; background: #ffd84d; }
+.tour-row button {
+  min-height: 36px; padding: 0 12px; border: 0; border-radius: 7px; cursor: pointer;
+  font: 400 12px/1 var(--font-ui, monospace); letter-spacing: 1px; text-transform: uppercase;
+}
+.tour-skip, .tour-back { background: transparent; color: #a99fc9; box-shadow: inset 0 0 0 2px #2b2152; }
+.tour-skip:hover, .tour-back:hover { color: #fff; }
+.tour-next { background: #6e54ff; color: #fff; box-shadow: 0 3px 0 #3d2bb0; }
+.tour-next:active { transform: translateY(2px); box-shadow: 0 1px 0 #3d2bb0; }
+.tour-row button:focus-visible { outline: 2px solid #ffd84d; outline-offset: 2px; }
+@media (max-width: 420px) { .tour-row button { padding: 0 9px; } .tour-card p { font-size: 13px; } }
+@media (prefers-reduced-motion: reduce) { .tour-ring, .tour-card.pop { animation: none; } }
+
+/* the header "?" that replays it */
+.ghost-btn.help-btn { font: 400 18px/1 var(--font-ui, monospace); color: #ddd7fe; }
+.ghost-btn.help-btn:hover { color: #ffd84d; }

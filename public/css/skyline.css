@@ -1,0 +1,83 @@
+/* "Chogtown" (js/skyline.js): a quiet full-bleed skyline between the device and the collection; day while the opened
+   pet is awake, after dark while it sleeps (shared with the page sky, js/scene.js → <html data-sky="day|night">).
+   Orbit: a ring of towers you drag to turn; no buttons, the canvas is the interface (click a tower to look inside,
+   click the sky / Esc to step back). */
+.nightcity {
+  position: relative; z-index: 1;
+  width: 100%; height: clamp(520px, 80vh, 1000px);
+  margin: 40px 0 10px;
+  color: #f5f0ff;
+  --nc-l: max(24px, calc((100% - 1380px) / 2 + 24px));
+}
+@media (min-width: 1560px) { .nightcity { --nc-l: max(40px, calc((100% - 1720px) / 2 + 40px)); } }
+.nc-stage { position: absolute; inset: 0; contain: strict; }
+/* placeholder under the canvas (and behind its soft top/bottom edges): night only, a day sky needs none */
+.nc-stage::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(5,4,11,0) 0%, #07060f 14%, #151033 62%, #0c0920 78%, rgba(6,5,13,0) 100%);
+  transition: opacity 2.4s ease;
+}
+[data-sky="day"] .nc-stage::before { opacity: 0; }
+.nc-cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: default; outline: none; opacity: 0; transition: opacity .8s ease; -webkit-tap-highlight-color: transparent; }
+.nightcity.on .nc-cv { opacity: 1; }
+.nightcity .nc-cv { cursor: grab; }
+.nightcity.zoomed .nc-cv { cursor: default; }
+.nightcity .nc-cv.out { cursor: zoom-out; }
+.nightcity .nc-cv.zi { cursor: zoom-in; }
+.nightcity .nc-cv.pt { cursor: pointer; }
+.nightcity .nc-cv.drag { cursor: grabbing; }
+.nc-cv:focus-visible { box-shadow: inset 0 0 0 1px rgba(233, 228, 255, 0.12); }
+
+/* the heading: big and centred in the sky above the ring */
+.nc-head {
+  position: absolute; left: 50%; transform: translateX(-50%); top: max(5%, 40px); margin: 0; pointer-events: none;
+  text-align: center; white-space: nowrap;
+  transition: opacity .4s ease;
+}
+.nightcity.zoomed .nc-head { opacity: 0; }
+.nc-title {
+  margin: 0; font: 700 clamp(22px, 2.4vw, 40px)/1 "Silkscreen", monospace; letter-spacing: 3px; text-transform: uppercase;
+  color: #e9e4ff; text-shadow: 0 1px 0 #07040f;
+}
+.nc-stat { margin: 12px 0 0; font: 400 clamp(13px, 1vw, 16px)/1.2 "Departure Mono", ui-monospace, monospace; color: #8a83ab; letter-spacing: .4px; }
+.nc-stat b { font-weight: 400; color: #ffd84d; }
+.nc-title, .nc-stat, .nc-stat b { transition: color 1.2s ease, text-shadow 1.2s ease; }
+/* by day: dark ink on the light sky */
+[data-sky="day"] .nc-title { color: #241a6b; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55); }
+[data-sky="day"] .nc-stat { color: #3f3888; }
+[data-sky="day"] .nc-stat b { color: #2e1e8c; font-weight: 700; }
+
+/* page text that sits right on the background (not on a panel) follows the light too */
+.tag, .coll-head h2 { transition: color 1.2s ease, text-shadow 1.2s ease; }
+[data-sky="day"] .tag { color: #2f2878; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45); }
+[data-sky="day"] .coll-head h2 { color: #241a6b; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55); }
+/* phones: the pet's name strip above the device */
+.strip, .strip b, .strip .s-day { transition: color 1.2s ease; }
+[data-sky="day"] .strip { color: #3f3888; }
+[data-sky="day"] .strip b { color: #241a6b; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55); }
+[data-sky="day"] .strip .s-day { color: #2e1e8c; }
+[data-sky="day"] .strip .mood { background: rgba(18, 11, 40, 0.86); }
+
+/* hover card on a face (desktop, zoomed in) */
+.nc-tip {
+  position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none;
+  display: flex; gap: 8px; align-items: center; padding: 4px 10px 4px 4px; max-width: 240px;
+  background: rgba(10, 8, 22, 0.92); border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(160, 140, 230, 0.22);
+  font: 400 11px/1.3 "Departure Mono", ui-monospace, monospace; color: #a99fc9;
+}
+.nc-tip[hidden] { display: none; }
+.nc-face { width: 34px; height: 34px; flex: none; border-radius: 3px; background: #0e091c; }
+.nc-tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.nc-tx > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nc-t1 { font: 700 11px/1.2 "Silkscreen", monospace; color: #f0ebff; letter-spacing: .4px; }
+.nc-t1 span { color: #8a83ab; font-weight: 400; }
+.nc-t2 i { display: inline-block; width: 6px; height: 6px; margin-right: 6px; border-radius: 1px; }
+.nc-t2 { color: #c9c2e8; }
+
+@media (max-width: 700px) {
+  .nightcity { height: 560px; margin: 24px 0 26px; --nc-l: 16px; }
+  .nc-head { top: 40px; }
+  .nc-title { font-size: 19px; letter-spacing: 1.5px; }
+  .nc-stat { font-size: 11px; margin-top: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .nc-cv, .nc-head, .nc-stage::before, .nc-title, .nc-stat, .nc-stat b, .tag, .coll-head h2, .strip, .strip b, .strip .s-day { transition: none; } }

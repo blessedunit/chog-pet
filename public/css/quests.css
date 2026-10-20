@@ -1,0 +1,125 @@
+/* Today: the day's three bounties + the Chogtown goal (js/quests.js). Sits under the device, about as wide as it. */
+.quests {
+  --q-v: #6e54ff; --q-lav: #ddd7fe; --q-cy: #85e6ff; --q-pk: #ff8ee4; --q-or: #ffae45; --q-ye: #ffd84d;
+  width: min(100%, 560px); margin-top: 6px; padding: 12px 14px 14px;
+  background: #140c2c;
+  border: 2px solid #2b2152; border-radius: 10px;
+}
+.quests .q-head { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; }
+.quests .q-h { margin: 0; font: 400 13px/1 var(--font-ui, var(--mono)); letter-spacing: 2px; text-transform: uppercase; color: var(--q-lav); }
+.q-streak { display: inline-flex; align-items: center; gap: 4px; font: 400 13px/1 var(--font-num, var(--mono)); color: var(--q-or); }
+.q-streak canvas { image-rendering: pixelated; }
+.q-left { margin-left: auto; font: 400 11px/1 var(--mono); letter-spacing: 1px; color: var(--dim, #8f87ad); }
+
+/* quest rows */
+.q-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.q {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 2px 2px 2px 8px;
+  border-radius: 8px; background: rgba(14, 9, 28, 0.55); box-shadow: inset 0 0 0 2px rgba(43, 33, 82, 0.9);
+}
+.q-box {
+  flex: none; width: 20px; height: 20px; display: grid; place-items: center;
+  background: #0e091c; box-shadow: inset 0 0 0 2px #3c2f73; border-radius: 3px;
+}
+.q-box svg { width: 14px; height: 12px; display: block; overflow: visible; }
+.q-box rect { fill: #0e091c; opacity: 0; }
+.q.done .q-box, .q-box.on { background: var(--q-ye); box-shadow: inset 0 0 0 2px #e39a1c, 0 2px 0 #7a4a10; }
+.q.done .q-box rect, .q-box.on rect { opacity: 1; }
+.q.just .q-box { animation: q-pop 0.36s steps(3) both; }
+.q.just .q-box rect { animation: q-px 0.01s steps(1) both; animation-delay: calc(80ms + var(--i) * 32ms); }
+@keyframes q-px { from { opacity: 0; } to { opacity: 1; } }
+@keyframes q-pop { 0% { transform: scale(0.6); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+.q-ic { flex: none; width: 24px; height: 24px; display: grid; place-items: center; }
+.q-ic canvas { image-rendering: pixelated; display: block; }
+.q-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; font: 400 14px/1.2 var(--mono); color: var(--ink, #f5f0ff); }
+.q-sub { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.q-pay { font: 400 11px/1.1 var(--mono); letter-spacing: 0.5px; color: var(--q-ye); opacity: 0.85; white-space: nowrap; }
+.q-sub .q-n { margin-left: auto; padding-right: 4px; font-size: 12px; }
+.q.done .q-pay { color: var(--muted, #a99fc9); opacity: 0.7; }
+.q-n { flex: none; font: 400 13px/1 var(--font-num, var(--mono)); color: var(--q-cy); letter-spacing: 1px; }
+.q.done { background: rgba(255, 216, 77, 0.06); box-shadow: inset 0 0 0 2px rgba(255, 216, 77, 0.22); }
+.q.done .q-t { color: var(--muted, #a99fc9); }
+.q.done .q-ic { opacity: 0.55; }
+.q.done { min-height: 44px; padding-right: 12px; }
+
+.q-go {
+  flex: none; min-width: 52px; min-height: 40px; padding: 0 12px; border: 0; border-radius: 6px;
+  background: var(--q-v); color: #fff; font: 400 12px/1 var(--font-ui, var(--mono)); letter-spacing: 1px; text-transform: uppercase;
+  box-shadow: 0 3px 0 #3d27a8; transform: translateY(-1px);
+}
+.q-go:hover { background: #7d66ff; }
+.q-go:active { transform: translateY(2px); box-shadow: 0 0 0 #3d27a8; }
+.q-go:disabled { opacity: 0.6; }
+.q-go:focus-visible { outline: 2px solid var(--q-ye); outline-offset: 2px; }
+
+/* all three done */
+.q-done {
+  display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 4px 6px 10px; border-radius: 8px;
+  background: linear-gradient(90deg, rgba(255, 216, 77, 0.14), rgba(255, 142, 228, 0.08)); box-shadow: inset 0 0 0 2px rgba(255, 216, 77, 0.35);
+}
+/* keeps the height of the three rows it replaces: the wallet answers after the first paint, so no jump (CLS) */
+.quests.all .q-done { min-height: var(--q-list-h, 132px); }
+.q-done-ic { display: flex; gap: 4px; flex: none; }
+.q-done-t { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.q-done-t b { font: 400 15px/1 var(--pix); color: var(--q-ye); letter-spacing: 1px; font-weight: 400; }
+.q-done-t i { font: 400 12px/1.2 var(--mono); font-style: normal; color: var(--q-lav); }
+.q-done.just .q-box { animation: q-pop 0.36s steps(3) both; }
+.q-done.just .q-box:nth-child(2) { animation-delay: 0.12s; }
+.q-done.just .q-box:nth-child(3) { animation-delay: 0.24s; }
+.q-done.just b { animation: q-flash 0.9s steps(2) 3; }
+@keyframes q-flash { 50% { color: #fff; } }
+
+/* Chogtown goal */
+.q-town { margin-top: 12px; }
+.q-town-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.q-town-l { font: 400 12px/1 var(--font-ui, var(--mono)); letter-spacing: 1px; color: var(--q-lav); text-transform: uppercase; white-space: nowrap; }
+.q-town-n { font: 400 12px/1 var(--mono); color: var(--muted, #a99fc9); white-space: nowrap; }
+.q-town-n b { font: 400 13px/1 var(--font-num, var(--mono)); color: #fff; font-weight: 400; }
+.q-bar {
+  position: relative; height: 16px; padding: 3px; border-radius: 4px; background: #0e091c;
+  box-shadow: inset 0 0 0 2px #3c2f73; overflow: hidden;
+}
+.q-bar i {
+  display: block; height: 100%; min-width: 4px; width: 0; border-radius: 1px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, #0e091c 6px 8px),
+    linear-gradient(90deg, var(--q-v), var(--q-pk));
+  transition: width 0.6s steps(12);
+}
+.q-town.won .q-town-l { color: var(--q-ye); }
+.q-town.won .q-bar { box-shadow: inset 0 0 0 2px #e39a1c; }
+.q-town.won .q-bar i {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 6px, #0e091c 6px 8px),
+    linear-gradient(90deg, var(--q-or), var(--q-ye), var(--q-or));
+  background-size: auto, 200% 100%;
+  animation: q-shine 2.4s steps(12) infinite;
+}
+@keyframes q-shine { to { background-position: 0 0, -200% 0; } }
+.q-town.boom .q-bar { animation: q-flash-bar 0.25s steps(2) 6; }
+@keyframes q-flash-bar { 50% { box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--q-ye); } }
+
+.q-fx { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 80; image-rendering: pixelated; }
+
+@media (max-width: 700px) {
+  .quests { width: 100%; margin-top: 2px; padding: 10px 10px 12px; }
+  .q { gap: 8px; padding-left: 6px; }
+  .q-t { font-size: 13px; }
+  .q-pay { font-size: 10px; }
+  .q-go { min-width: 46px; padding: 0 10px; }
+  .q-done { gap: 10px; padding-left: 8px; }
+  .q-done-ic { gap: 3px; }
+  .q-done-ic .q-box { width: 16px; height: 16px; }
+  .q-done-ic .q-box svg { width: 11px; height: 10px; }
+  .q-done-t b { font-size: 13px; white-space: nowrap; }
+  .q-done-t i { font-size: 11px; }
+  .q-town-n { font-size: 11px; }
+}
+@media (max-width: 380px) {
+  .q-ic { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .q.just .q-box, .q-done.just .q-box, .q-done.just b, .q-town.won .q-bar i, .q-town.boom .q-bar { animation: none; }
+  .q.just .q-box rect { animation: none; opacity: 1; }
+  .q-bar i { transition: none; }
+}

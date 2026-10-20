@@ -1,0 +1,165 @@
+/* Interactive polish (js/fx.js): a calm entrance, scroll reveals, LCD crossfade, microinteractions, cursor.
+   Everything here is prefixed fx-. Loading motion is opacity only: nothing flies in, drops or moves.
+   prefers-reduced-motion: nothing moves; content is simply there. */
+
+/* ---------- first paint: hold the stage until the entrance fades it in ----------
+   A failsafe: the hold lifts by itself after 3 s if fx.js never runs. */
+html:not(.fx-ready):not(.fx-off) :is(.top > *, .strip, .stage .panel, .stage .cx-panel, .device-wrap, .quests) {
+  animation: fx-hold 1ms 3s backwards;
+}
+html.fx-intro:not(.fx-ready) .device-wrap { animation: none; } /* the intro's egg zooms into the device: keep it there */
+@keyframes fx-hold { from, to { opacity: 0; } }
+
+/* waiting below the fold */
+.fx-wait { opacity: 0; }
+
+/* ---------- reveals: one calm fade, in place (opacity only, so nothing moves and the layout never shifts) ---------- */
+.fx-in { animation-delay: var(--fx-d, 0ms) !important; animation-fill-mode: both !important; }
+.fx-fade { animation: fx-fade 0.28s cubic-bezier(0.2, 0.7, 0.3, 1); }
+@keyframes fx-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* LCD: the previous picture (or the loading screen) melts into the new Chog */
+.fx-snap { position: absolute; inset: 0; z-index: 20; pointer-events: none; transition: opacity 0.32s ease-out; }
+.fx-snap.out { opacity: 0; }
+.fx-snap canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.fx-snap .fx-snap-art { image-rendering: auto; }
+.fx-snap .fx-snap-scr { image-rendering: pixelated; image-rendering: crisp-edges; }
+.fx-chan {
+  position: absolute; top: 6%; right: 5%; z-index: 21; pointer-events: none; padding: 3px 6px 4px; border-radius: 3px;
+  background: rgba(7, 4, 15, 0.72); color: #46e38f; font: 400 13px/1 var(--pix, monospace); letter-spacing: 1px;
+  text-shadow: 1px 1px 0 #0d3a22; animation: fx-fade 0.24s ease-out both; transition: opacity 0.4s ease-out;
+}
+.fx-chan.out { opacity: 0; }
+
+/* chat list: the first batch of messages fades in instead of popping */
+.cx-list.cx-fadein > * { animation: fx-fade 0.28s ease-out both; }
+
+/* ---------- scroll depth: a pixel candle along the top edge ---------- */
+/* always laid out, never moves or resizes, and always paints something (a near-invisible track), so its rect
+   never changes: the fill is a background sized to --p and the wick a 4px background at --p. Paint-only, CLS 0. */
+@property --wk { syntax: "<color>"; inherits: false; initial-value: #fff7c2; }
+.fx-prog { position: fixed; left: 0; top: 0; z-index: 40; width: 100%; height: 4px; overflow: hidden; pointer-events: none; contain: strict; --p: 0px; }
+.fx-prog i {
+  position: absolute; inset: 0; display: block; --wk: #fff7c2;
+  background:
+    linear-gradient(var(--wk), var(--wk)) calc(var(--p) - 6px) 0 / 4px 4px no-repeat,
+    linear-gradient(rgba(14, 9, 28, 0.6), rgba(14, 9, 28, 0.6)) 0 100% / var(--p) 1px no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 6px, rgba(14, 9, 28, 0.85) 6px 8px) 0 0 / var(--p) 100% no-repeat,
+    linear-gradient(90deg, #6c49ef, #8b6cff 40%, #ff7bb5 80%, #ffd84d) 0 0 / var(--p) 100% no-repeat,
+    linear-gradient(rgba(14, 9, 28, 0.02), rgba(14, 9, 28, 0.02));
+}
+.fx-prog.fx-prog-go i { animation: fx-wick 0.24s steps(2) infinite; }
+@keyframes fx-wick { 50% { --wk: #ffd84d; } }
+
+/* ---------- microinteractions ---------- */
+/* pixel press: 2px down, the shadow collapses */
+.chip-btn, .ghost-btn, .town-tabs button, .stk { transition: transform 0.06s steps(1), box-shadow 0.06s steps(1); }
+.chip-btn:active { transform: translateY(2px); box-shadow: inset 0 0 0 2px var(--line), 0 0 0 transparent; }
+.ghost-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--shade), inset 0 0 0 2px var(--line); }
+.town-tabs button:active, .stk:active { transform: translateY(2px); }
+.go:active, .pill-btn:active { transition-timing-function: steps(1); }
+
+/* a pixel glint sweeps across primary buttons on hover */
+.pill-btn:not(.alt), .go { position: relative; overflow: hidden; }
+.pill-btn:not(.alt)::after, .go::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0 6px, transparent 6px 9px, rgba(255, 255, 255, 0.3) 9px 12px, transparent 12px) no-repeat 0 0 / 14px 100%;
+  transform: translateX(-14px); opacity: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pill-btn:not(.alt):hover::after, .go:hover::after { animation: fx-glint 0.5s steps(8, end); }
+}
+@keyframes fx-glint { from { opacity: 1; transform: translateX(-14px); } to { opacity: 1; transform: translateX(100%); } }
+
+/* the logo egg wiggles on hover */
+@media (hover: hover) {
+  .logo:hover img { animation: fx-wiggle 0.44s steps(1, end); }
+}
+@keyframes fx-wiggle {
+  0% { transform: rotate(-10deg) translateY(-2px); }
+  25% { transform: rotate(8deg) translateY(-3px); }
+  50% { transform: rotate(-5deg) translateY(-1px); }
+  75% { transform: rotate(3deg); }
+  100% { transform: none; }
+}
+
+/* toast: a soft fade and a short rise (pet.css), no bounce */
+.toast { transition: opacity 0.22s ease-out, transform 0.22s ease-out; transform: translate(-50%, 8px); }
+.toast.show { transform: translate(-50%, 0); }
+
+/* panels lean a hair toward the cursor (desktop) */
+.fx-tilt { transition: transform 0.18s ease-out; }
+
+/* sparkle burst on a confirmed action */
+.fx-spark { position: fixed; z-index: 60; width: 128px; height: 128px; pointer-events: none; image-rendering: pixelated; image-rendering: crisp-edges; }
+
+/* ---------- pixel cursor (desktop; js sets the images) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  html.fx-cursor, html.fx-cursor body { cursor: var(--fx-cur); }
+  html.fx-cursor :is(a[href], button:not(:disabled), summary, label[for], [role="button"], [role="menuitem"], [role="tab"], .ico, .thumbs button) { cursor: var(--fx-cur-pt); }
+  html.fx-cursor body[style*="cursor: pointer"] { cursor: var(--fx-cur-pt) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-in, .fx-chan, .cx-list.cx-fadein > *, .logo:hover img, .pill-btn:not(.alt):hover::after, .go:hover::after { animation: none !important; }
+  .fx-wait { opacity: 1; }
+  .fx-tilt, .fx-snap, .toast { transition: none; }
+  .fx-snap { display: none; }
+}
+
+/* ---------- calm loading: placeholders that hold the exact shape of what is coming ---------- */
+.sk-shim {
+  color: transparent !important; box-shadow: none !important;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 40%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 60% 100%) 0 0 / 300% 100% #ffffff0a !important;
+  animation: sk-shim 1.6s linear infinite;
+}
+@keyframes sk-shim { from { background-position: 100% 0; } to { background-position: -50% 0; } }
+.sk-txt { color: var(--dim) !important; opacity: 0.6; }
+.sk-line { display: inline-block; min-width: 5em; border-radius: 3px; }
+.sk-chip { display: inline-block; min-width: 4.5em; border-radius: 4px; }
+/* the Chogtown grid before /api/town answers: the same cells, empty and softly shimmering */
+.tc-sk { pointer-events: none; }
+.tc-sk i { display: block; width: 100%; aspect-ratio: 1; border-radius: 10px; }
+.tc-sk span { display: block; width: 60%; margin: 0 auto; }
+.town-tabs button:disabled { opacity: 1; cursor: default; }
+.tb-key .sk-line { height: 12px; }
+/* faces and thumbs that come over the network fade in when they land (cached ones just show) */
+img.ld-fade { opacity: 0; }
+.tc img, .thumbs img, .pc-thumb { transition: opacity 0.25s ease-out, transform 0.1s; }
+/* the wellbeing bar slides to its value, it doesn't tick */
+.st-bar i { transition: width 0.45s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-shim { animation: none; }
+  img.ld-fade { opacity: 1; }
+  .tc img, .thumbs img, .pc-thumb, .st-bar i { transition: none; }
+}
+
+/* fixed shapes, so late data never pushes anything around */
+.pc-sub:empty::before { content: "\a0"; }
+.tb-key .tb-q { flex-basis: 100%; }
+.tb-key { min-height: 41px; align-content: flex-start; }
+.home { min-height: 43px; }
+/* phones and tablets: the name strip over the device always keeps two lines, so the device never hops */
+@media (max-width: 700px) { .strip { min-height: 47px; align-content: center; } }
+/* the docked chat (chat.css sets animation: none on .cx-dock) joins the entrance fade */
+.cx-panel.cx-dock.fx-fade { animation: fx-fade 0.28s cubic-bezier(0.2, 0.7, 0.3, 1); }
+/* the level chip on the device fades in when it shows up (a level-up still plays shop.css's pop) */
+.cdl-pet:not([hidden]) { animation: fx-fade 0.28s ease-out; }
+@media (prefers-reduced-motion: reduce) { .cx-panel.cx-dock.fx-fade, .cdl-pet:not([hidden]) { animation: none; } }
+/* Today: the town goal row keeps its place until /api/today answers, then fades in; its bar slides, not ticks */
+.q-town.q-wait { visibility: hidden; }
+.q-town.q-in { animation: fx-fade 0.28s ease-out; }
+.q-bar i { transition: width 0.5s ease-out; }
+@media (prefers-reduced-motion: reduce) { .q-town.q-in { animation: none; } }
+/* the first-visit tour card fades in softly instead of a stepped pop */
+.tour-card.pop { animation: fx-fade 0.24s ease-out; }
+@media (prefers-reduced-motion: reduce) { .tour-card.pop { animation: none; } }
+/* phones: with the chat sheet open, toasts show at the top instead of over its compose row */
+body:has(#cxPanel:not(.cx-dock):not([hidden])) .toast { top: max(14px, env(safe-area-inset-top)); bottom: auto; }
+/* Chogtown key: the three moods stay on one line in the narrow desktop column (the "met" line goes under them) */
+.tb-key { column-gap: 9px; }
+.tb-key > span { white-space: nowrap; }
+@media (min-width: 1280px) and (max-width: 1700px) { .tb-key { font-size: 11px; } }
+/* short desktop screens (≤ 820 px tall): the docked chat gives the pet card a little more room, so its quirks aren't cut */
+@media (min-width: 1280px) and (max-height: 820px) { .cx-panel.cx-dock { min-height: 196px; } }
