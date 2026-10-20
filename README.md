@@ -7,7 +7,7 @@
 **A shared tamagotchi for every Chog Genesis NFT on Monad.**
 Its holder is its home. Anyone can babysit it.
 
-[**▶ Play at chogpet.xyz**](https://chogpet.xyz) &nbsp;·&nbsp; [How to play](https://chogpet.xyz/guide.html) &nbsp;·&nbsp; Built for **Chogathon 2026**
+[**▶ Play at chogpet.xyz**](https://chogpet.xyz) &nbsp;·&nbsp; [**🎬 Watch the trailer**](https://www.youtube.com/watch?v=nuLqCMIUBiw) &nbsp;·&nbsp; [How to play](https://chogpet.xyz/guide.html) &nbsp;·&nbsp; Built for **Chogathon 2026**
 
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers%20%2B%20D1-f38020?style=flat-square&logo=cloudflare&logoColor=white)
 ![Monad](https://img.shields.io/badge/Monad-mainnet-6e54ff?style=flat-square)
@@ -102,4 +102,4 @@ For your own deploy: `wrangler d1 create chog-pet`, put the id in `wrangler.json
 
 ---
 
-<sub>Independent fan project, not affiliated with Chog or Monad. Chog Genesis art belongs to its creators and holders.</sub>
+<sub>Made by [@exitliq](https://x.com/exitliq) · tremolyoung@gmail.com<br>Independent fan project, not affiliated with Chog or Monad. Chog Genesis art belongs to its creators and holders.</sub>

@@ -679,7 +679,7 @@ html { overflow-x: clip; }
 
 /* ===== footer: about / docs / the collection ===== */
 .foot { position: relative; z-index: 1; margin-top: 40px; padding: 30px 24px 26px; background: #0b0719; box-shadow: 0 -4px 0 #0e091c, 0 -8px 0 rgba(110, 84, 255, 0.35); }
-.foot-in { max-width: 1380px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 28px; }
+.foot-in { max-width: 1380px; margin: 0 auto; display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 28px; }
 .foot-brand p { margin: 12px 0 0; color: var(--muted); font-size: 13px; max-width: 30em; }
 .foot-brand .logo-t { font-size: 18px; }
 .foot-brand img { width: 32px; height: 32px; image-rendering: pixelated; }
@@ -690,7 +690,9 @@ html { overflow-x: clip; }
 .foot-copy { width: fit-content; padding: 6px 10px; border: 0; border-radius: 6px; background: var(--panel2); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink); font: 400 12px var(--mono); }
 .foot-copy b { margin-left: 6px; color: var(--yellow); font-weight: 400; }
 .foot .fine { max-width: 1380px; margin: 26px auto 0; padding-top: 16px; border-top: 2px dashed var(--line); }
-@media (max-width: 900px) { .foot-in { grid-template-columns: 1fr 1fr; } .foot-brand { grid-column: 1 / -1; } }
+@media (max-width: 900px) { .foot-in { grid-template-columns: 1fr 1fr 1fr; } .foot-brand { grid-column: 1 / -1; } }
+@media (max-width: 640px) { .foot-in { grid-template-columns: 1fr 1fr; } }
+.foot-col a { overflow-wrap: anywhere; }
 @media (max-width: 420px) { .foot { padding: 24px 16px 22px; } .foot-in { grid-template-columns: 1fr; gap: 22px; } }
 
 /* ===== /guide ===== */
@@ -1026,3 +1028,10 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .wh-b b { font-weight: 400; color: var(--exit); }
 .wh-k { margin-top: 10px; font: 400 10px/1 var(--font-ui); color: var(--dim); letter-spacing: 0.5px; }
 @media (prefers-reduced-motion: reduce) { .wh, .wh-box { transition: none; } }
+
+/* trailer link: header button (hidden on narrow phones, the footer has it) and the guide */
+.ghost-btn.trailer-btn { font: 400 15px/1 var(--font-ui, monospace); color: #ffd84d; text-decoration: none; }
+.ghost-btn.trailer-btn:hover { color: #fff; }
+@media (max-width: 520px) { .ghost-btn.trailer-btn { display: none; } }
+.g-trailer { display: inline-block; padding: 8px 12px; border-radius: 8px; background: var(--panel2); box-shadow: 0 4px 0 var(--shade), inset 0 0 0 2px var(--line); color: #ffd84d; text-decoration: none; }
+.g-trailer:hover { color: #fff; }
