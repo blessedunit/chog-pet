@@ -1033,8 +1033,7 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .g-trailer:hover { color: #fff; }
 
 /* ===== trailer: a still with a play button, YouTube loads on tap ===== */
-.trailer { position: relative; z-index: 1; max-width: 1380px; margin: 26px auto 0; padding: 0 24px; }
-.tr-in { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+.trailer { position: relative; z-index: 1; max-width: 880px; margin: 34px auto 0; padding: 0 24px; }
 .tr-video { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; box-shadow: 0 0 0 2px var(--line), 0 6px 0 var(--shade); }
 .tr-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .tr-play { position: absolute; inset: 0; padding: 0; border: 0; background: none; cursor: pointer; }
@@ -1045,15 +1044,5 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .tr-play:hover .tr-btn { transform: translateY(-2px); }
 .tr-play:active .tr-btn { transform: translateY(3px); box-shadow: 0 2px 0 #8a1f57, inset 0 0 0 3px rgba(255, 255, 255, 0.25); }
 .tr-play:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
-.tr-side h2 { font: 700 18px/1 var(--pix); letter-spacing: 1px; text-transform: none; color: var(--ink); }
-.tr-lead { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.5; }
-.tr-ch { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 4px; }
-.tr-ch button { width: 100%; display: flex; gap: 12px; align-items: baseline; padding: 6px 10px; border: 0; border-radius: 6px; background: transparent; color: var(--ink); font: 400 13px var(--mono); text-align: left; cursor: pointer; }
-.tr-ch button:hover, .tr-ch button:focus-visible { background: var(--panel2); outline: none; }
-.tr-ch b { min-width: 3.2em; color: var(--yellow); font-weight: 400; }
-.tr-yt { font-size: 13px; color: var(--muted); text-decoration: none; }
-.tr-yt:hover { color: var(--yellow); }
-@media (min-width: 1560px) { .trailer { max-width: 1720px; padding: 0 40px; } }
-@media (max-width: 900px) { .tr-in { grid-template-columns: 1fr; } .tr-ch { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 700px) { .trailer { padding: 0 16px; } }
-@media (max-width: 460px) { .tr-ch { grid-template-columns: 1fr; } .tr-btn { width: 72px; height: 50px; margin: -25px 0 0 -36px; } .tr-btn::after { border-width: 11px 0 11px 19px; margin: -11px 0 0 -7px; } }
+@media (max-width: 900px) { @media (max-width: 700px) { .trailer { padding: 0 16px; } }
+@media (max-width: 460px) { .tr-btn { width: 72px; height: 50px; margin: -25px 0 0 -36px; } .tr-btn::after { border-width: 11px 0 11px 19px; margin: -11px 0 0 -7px; } }
