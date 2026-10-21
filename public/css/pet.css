@@ -1062,25 +1062,15 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .tr-now { display: block; font: 400 11px/1 var(--mono); letter-spacing: 3px; text-transform: uppercase; color: #9ff0d0; }
 .tr-sign .tr-now:last-child { color: #cfc4ff; }
 
-/* the audience on the sides: seats come from trailer.js as --x (from the outer edge), --b (bottom), --w (size) */
-.tr-crowd { position: absolute; bottom: 0; height: 500px; width: calc((100% - 832px) / 2 - 40px); pointer-events: none; }
-.tr-l { left: 14px; }
-.tr-r { right: 14px; }
-.tr-fan { position: absolute; bottom: var(--b); width: var(--w); display: block; pointer-events: auto; animation: tr-bob 2.6s ease-in-out var(--d, 0s) infinite; }
-.tr-l .tr-fan, .tr-l .tr-tw { left: min(var(--x), calc(100% - var(--w, 16px))); }
-.tr-r .tr-fan, .tr-r .tr-tw { right: min(var(--x), calc(100% - var(--w, 16px))); }
-.tr-fan img { display: block; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #6b4cff, 0 6px 0 5px var(--shade); background: #fff; }
-.tr-fan:hover img { box-shadow: 0 0 0 3px #ffd84d, 0 0 0 5px #6b4cff, 0 6px 0 5px var(--shade); }
-.tr-tw { position: absolute; bottom: var(--b); font-style: normal; font-family: var(--mono); line-height: 1; color: #fff; opacity: 0.2; animation: tr-tw 3.2s ease-in-out infinite; }
-.tr-tw:nth-of-type(3n + 1) { color: #9ff0d0; }
-.tr-tw:nth-of-type(3n + 2) { color: #ffe9a8; }
-@keyframes tr-tw { 0%, 100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.95; transform: scale(1.15); } }
-@keyframes tr-bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(var(--tilt, 2deg)); } }
-.tr-l .tr-fan { --tilt: 3deg; }
-.tr-r .tr-fan { --tilt: -3deg; }
-/* while the trailer plays: hearts float up from the crowd */
-.trailer.playing .tr-fan::after { content: "\2665"; position: absolute; left: 50%; top: -6px; color: #ff4fa0; font: 400 20px/1 var(--mono); text-shadow: 0 2px 0 var(--shade); opacity: 0; animation: tr-heart 2.6s ease-out var(--d, 0s) infinite; }
-@keyframes tr-heart { 0% { opacity: 0; transform: translate(-50%, 0) scale(0.6); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -46px) scale(1.15); } }
-@media (max-width: 1180px) { .tr-crowd { display: none; } }
+/* two hearts made of Chog faces beside the video, exactly as tall as it; trailer.js lays them out */
+.tr-heart { position: absolute; top: 0; height: 0; pointer-events: none; animation: tr-lubdub 2.6s ease-in-out infinite; }
+.tr-face { position: absolute; left: 0; top: 0; display: block; border-radius: 22%; background: url(/img/atlas-48.webp) no-repeat; image-rendering: pixelated; pointer-events: auto;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px #6b4cff, 0 3px 0 2px var(--shade); transition: box-shadow 0.6s ease, scale 0.2s ease; }
+.tr-face:hover { scale: 1.12; box-shadow: 0 0 0 2px #ffd84d, 0 0 0 3px #6b4cff, 0 3px 0 2px var(--shade); }
+.tr-face.hot { box-shadow: 0 0 0 2px #ffd0e6, 0 0 0 3px #ff4fa0, 0 0 16px 4px rgba(255, 79, 160, 0.55); }
+/* a very soft lub-dub, then a long rest; slower once the trailer plays */
+@keyframes tr-lubdub { 0%, 100% { scale: 1; } 7% { scale: 1.028; } 14% { scale: 1; } 21% { scale: 1.018; } 30% { scale: 1; } }
+.trailer.playing .tr-heart { animation-duration: 4.2s; }
+@media (max-width: 1100px) { .tr-heart { display: none; } }
 @media (max-width: 520px) { .tr-sign { padding: 12px 22px 10px; } .tr-sign b { font-size: 22px; } .tr-now { font-size: 10px; letter-spacing: 2px; } }
-@media (prefers-reduced-motion: reduce) { .tr-sign::before, .tr-fan, .tr-tw, .trailer.playing .tr-fan::after { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .tr-sign::before, .tr-heart { animation: none; } }
