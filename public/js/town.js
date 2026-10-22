@@ -10,7 +10,8 @@ const TABS = [
   { k: "quiet", label: "Not met", has: (c) => c === "0" || c === "w" },
 ];
 // "w" = waiting (nobody came for a while): neutral grey, never counted as needing help
-const ORDER = { x: 0, s: 1, n: 2, f: 3, h: 4, w: 5, 0: 6 };
+// sad and hungry ones first, the ones that wandered off (an empty room) at the end
+const ORDER = { s: 0, n: 1, x: 2, f: 3, h: 4, w: 5, 0: 6 };
 
 // images that still have to come over the network fade in when they land; ones already in the cache just show
 export function softImgs(root) {
@@ -93,7 +94,7 @@ export class Town {
     if (tab.k === "moved") return [...this.moved.entries()].sort((a, b) => b[1] - a[1]).map(([id]) => id);
     const out = [];
     for (let i = 0; i < 1969; i++) if (tab.has(this.cells[i] || "0")) out.push(i + 1);
-    // worst off first; the quiet ones in a shuffled-but-stable order so it isn't always #1, #2, #3…
+    // most in need first; the quiet ones in a shuffled-but-stable order so it isn't always #1, #2, #3…
     if (tab.k === "quiet") return out.sort((a, b) => ((a * 7919) % 1969) - ((b * 7919) % 1969));
     return out.sort((a, b) => ORDER[this.status(a)] - ORDER[this.status(b)]);
   }

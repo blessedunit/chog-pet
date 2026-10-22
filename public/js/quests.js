@@ -95,7 +95,7 @@ async function pick(kind) {
     return 0;
   };
   let id = 0;
-  if (kind === "needy") id = first(ids("sx"), ids("n"), ids("w0"));
+  if (kind === "needy") id = first(ids("s"), ids("n"), ids("x"), ids("w0"));
   else if (kind === "play") {
     // Candle Catch needs a Chog that's awake and has the energy: one nobody met lately, not in bed right now
     const tr = await loadTraits();

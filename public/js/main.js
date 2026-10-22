@@ -1324,6 +1324,11 @@ const readyOnce = () => { introReady(); introReady = () => {}; };
   const urlPick = !!id;
   const last = Number(store.get("pet.last")) || 0;
   if (!id && last >= 1 && last <= 1969) id = last;
+  // the last one wandered off meanwhile: open on one that's home instead of an empty room
+  if (id && !urlPick) {
+    await Promise.race([townReady, new Promise((r) => setTimeout(r, 1500))]);
+    if (town.status(id) === "x") id = 0;
+  }
   if (!id) {
     await Promise.race([townReady, new Promise((r) => setTimeout(r, 1500))]);
     for (let i = 0; i < 40 && !id; i++) {
