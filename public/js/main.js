@@ -83,6 +83,8 @@ function say(text, ms = 3200) {
     return;
   }
   s.textContent = text;
+  // nobody home: speak from the note on the floor, not from the empty spot over the sign
+  s.classList.toggle("low", !!simNow()?.away);
   s.classList.add("show");
   screen.talking = true;
   clearTimeout(speechT);

@@ -283,6 +283,7 @@ a { color: inherit; }
   opacity: 0; transition: opacity 0.18s, transform 0.18s steps(3); pointer-events: none;
 }
 .speech.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
+.speech.low { left: 34%; top: auto; bottom: 34%; max-width: 62%; }
 .speech::after { content: ""; position: absolute; left: 50%; bottom: -8px; width: 8px; height: 8px; background: #fff; box-shadow: 2px 2px 0 #1d1233; transform: translateX(-50%) rotate(45deg); }
 
 /* food menu on the screen */
