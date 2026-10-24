@@ -1063,36 +1063,9 @@ html[data-sky="day"] .hint b { text-shadow: none; }
 .tr-now { display: block; font: 400 11px/1 var(--mono); letter-spacing: 3px; text-transform: uppercase; color: #9ff0d0; }
 .tr-sign .tr-now:last-child { color: #cfc4ff; }
 
-/* a little Chog party on both sides of the video, as tall as it: heads on legs, each dancing to its own beat;
-   trailer.js places them in rows and makes one hop now and then with a note or a heart */
-.tr-party { position: absolute; top: 0; height: 0; pointer-events: none; }
-.tr-c { position: absolute; width: var(--s); height: calc(var(--s) * 1.2); margin-left: calc(var(--s) / -2); animation: tr-dance var(--d) ease-in-out var(--dl) infinite; }
-.tr-c::before { content: ""; position: absolute; left: 8%; right: 8%; bottom: -3px; height: 5px; border-radius: 50%; background: rgba(70, 56, 160, 0.22); }
-.tr-h { position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); border-radius: 26%; background: url(/img/atlas-48.webp) no-repeat; image-rendering: pixelated;
-  box-shadow: 0 0 0 2px #3e3288, 0 3px 0 2px rgba(62, 50, 136, 0.35); }
-.tr-l, .tr-l::after { position: absolute; bottom: 0; width: 14%; height: 20%; background: #4a3d96; border-radius: 0 0 2px 2px; transform-origin: 50% 0;
-  animation: tr-step var(--d) steps(1) var(--dl) infinite; }
-.tr-l { left: 30%; }
-.tr-l::after { content: ""; left: 200%; width: 100%; height: 100%; animation-direction: reverse; }
-.tr-c.hop { animation: tr-hop 0.62s cubic-bezier(0.3, 0.7, 0.4, 1); }
-@keyframes tr-dance { 0%, 100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-5%) rotate(-3deg); } 50% { transform: translateY(0) rotate(0); } 75% { transform: translateY(-5%) rotate(3deg); } }
-@keyframes tr-step { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.7); } }
-@keyframes tr-hop { 0%, 100% { transform: translateY(0) scale(1); } 12% { transform: translateY(2%) scale(1.06, 0.92); } 45% { transform: translateY(-38%) scale(0.97, 1.04); } 80% { transform: translateY(0) scale(1.05, 0.95); } }
-.tr-e { position: absolute; margin-left: -0.5em; font: 700 var(--es) / 1 system-ui, sans-serif; color: var(--ec); text-shadow: 0 1px 0 #fff, 0 0 6px rgba(255, 255, 255, 0.8);
-  animation: tr-float 1.7s ease-out forwards; }
-@keyframes tr-float { 0% { opacity: 0; transform: translateY(6px) scale(0.6); } 15% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translate(var(--ex), -46px) scale(1.1); } }
-.trailer.playing .tr-c:not(.hop) { animation-duration: calc(var(--d) * 0.55); }
-.trailer.playing .tr-l, .trailer.playing .tr-l::after { animation-duration: calc(var(--d) * 0.55); }
-.tr-ball { position: absolute; width: var(--b); height: var(--b); margin-left: calc(var(--b) / -2); z-index: 0; }
-.tr-ball::before { content: ""; position: absolute; left: 50%; bottom: 100%; width: 2px; height: calc(var(--b) * 0.5); margin-left: -1px; background: #6b5fb8; }
-.tr-ball i { position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 2px #3e3288, 0 0 22px 8px rgba(255, 216, 77, 0.45);
-  background: radial-gradient(circle at 32% 28%, #fff 0 10%, transparent 24%), repeating-linear-gradient(90deg, rgba(40, 30, 110, 0.55) 0 1px, transparent 1px 16.6%),
-    repeating-linear-gradient(0deg, rgba(40, 30, 110, 0.55) 0 1px, transparent 1px 16.6%), linear-gradient(90deg, #7d6ae6, #e9e4ff, #9c8cf2, #ff9bd2, #8e7cf0, #fff3b8, #7d6ae6) 0 0 / 200% 100%;
-  animation: tr-spin 3s linear infinite; }
-.tr-ball::after { content: "✦"; position: absolute; right: -14%; top: 4%; font: 700 calc(var(--b) * 0.4) / 1 system-ui, sans-serif; color: #fff; text-shadow: 0 0 6px #ffd84d; animation: tr-twinkle 1.6s ease-in-out infinite; }
-@keyframes tr-spin { to { background-position: 0 0, 33.2% 0, 0 0, -200% 0; } }
-@keyframes tr-twinkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1); } }
-.trailer.playing .tr-ball i { animation-duration: 1.2s; }
+/* Chog bleachers on both sides of the video, as tall as it: a pixel open-air cinema in the town's own style
+   (bunting, risers, tiny Chogs cheering in step); trailer.js paints them on two small canvases scaled up crisp */
+.tr-party { position: absolute; top: 0; left: 0; pointer-events: none; image-rendering: pixelated; image-rendering: crisp-edges; }
 @media (max-width: 1100px) { .tr-party { display: none; } }
 @media (max-width: 520px) { .tr-sign { padding: 12px 22px 10px; } .tr-sign b { font-size: 22px; } .tr-now { font-size: 10px; letter-spacing: 2px; } }
-@media (prefers-reduced-motion: reduce) { .tr-sign::before, .tr-c, .tr-l, .tr-l::after, .tr-e, .tr-ball i, .tr-ball::after { animation: none; } .tr-e { display: none; } }
+@media (prefers-reduced-motion: reduce) { .tr-sign::before { animation: none; } }
