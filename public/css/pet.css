@@ -356,6 +356,11 @@ a { color: inherit; }
 .pc-row { font-size: 13px; color: var(--muted); padding: 6px 0 2px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
 .pc-row b { color: var(--ink); font-weight: 400; }
 .pc-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.x-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; flex: 1; }
+.x-btn svg { flex: none; }
+.x-btn.on svg { display: none; }
+.x-btn.on { animation: x-pop 0.3s steps(3); }
+@keyframes x-pop { 50% { transform: scale(1.06); } }
 .pet-card { position: relative; }
 .delta { position: absolute; right: 52px; margin-top: -2px; font: 400 13px/1 var(--mono); pointer-events: none; animation: rise 1.2s steps(6) forwards; }
 .delta.up { color: #7ff0b3; }

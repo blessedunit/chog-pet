@@ -1214,11 +1214,23 @@ $("xBtn").addEventListener("click", (e) => {
   // desktop: the link opens X as usual; the copy starts now, while this click still counts as the user's
   if (!navigator.clipboard || !window.ClipboardItem) return;
   const blob = cardBlob();
+  const btn = e.currentTarget;
   navigator.clipboard
     .write([new ClipboardItem({ "image/png": blob })])
-    .then(() => toast(`Card copied. Paste it into the post with ${/Mac|iP/.test(navigator.platform) ? "⌘" : "Ctrl"}+V`, 6000))
+    .then(() => {
+      const keys = /Mac|iP/.test(navigator.platform) ? "⌘+V" : "Ctrl+V";
+      // the button itself says it worked, in green, for a few seconds
+      btn.classList.add("on");
+      $("xLbl").textContent = `✓ Card copied · ${keys} in X`;
+      clearTimeout(btn._t);
+      btn._t = setTimeout(() => (btn.classList.remove("on"), ($("xLbl").textContent = X_LABEL)), 6000);
+      toast(`Card copied. Paste it into the post with ${keys}`, 6000);
+    })
     .catch(() => {});
 });
+// on a phone the share sheet carries the card itself
+const X_LABEL = matchMedia("(pointer: coarse)").matches && navigator.canShare ? "Share card on X" : "Copy card & post on X";
+$("xLbl").textContent = X_LABEL;
 $("nameBtn").addEventListener("click", () => {
   $("nameIn").value = cur.view && cur.view.name !== cur.view.nftName ? cur.view.name : "";
   $("nameDlg").showModal();
