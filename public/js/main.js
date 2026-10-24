@@ -721,10 +721,7 @@ function paintCard() {
   $("nameBtn").hidden = !mine;
   paintStickers(v);
   const url = location.origin + `/?chog=${nameNum(v.id)}`;
-  const text = mine
-    ? `${v.name} has lived with me for ${days} day${days === 1 ? "" : "s"} (${st.name}). Today it's ${MOOD_LABEL[m] || m}. Come babysit it:`
-    : `I just babysat ${v.name}, a ${cur.p.title}, on Chog Pet. It's ${MOOD_LABEL[m] || m} today. Your turn:`;
-  $("xBtn").href = `https://x.com/intent/post?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  $("xBtn").href = `https://x.com/intent/post?text=${encodeURIComponent(shareText(v))}&url=${encodeURIComponent(url)}`;
   // past homes
   const past = v.history || [];
   $("pastPanel").hidden = !past.length;
@@ -1175,37 +1172,53 @@ async function finishSignIn(resume) {
 }
 if (backFromSocial && !me.token) finishSignIn(true);
 
+// the post's words: a holder brags about its days at home, anyone else hands the babysitting on
+function shareText(v) {
+  const s = simNow() || v.state || {};
+  const m = moodOf(s), days = daysOf(v), st = stageOf(Math.max(0, days));
+  if (m === "away") return `${v.name} wandered off looking for snacks on Chog Pet. One meal brings it home. Help out:`;
+  return me.address && v.owner === me.address
+    ? `${v.name} has lived with me for ${days} day${days === 1 ? "" : "s"} (${st.name}). Today it's ${MOOD_LABEL[m] || m}. Come babysit it:`
+    : `I just babysat ${v.name}, a ${cur.p.title}, on Chog Pet. It's ${MOOD_LABEL[m] || m} today. Your turn:`;
+}
 // ---------- share ----------
-async function share() {
-  if (!cur.view) return;
-  sfx.click();
+// "Post on X" opens a ready post (text + the Chog's link, whose preview is its art). On the way it copies the
+// Chog's card as an image, so it can be pasted into the post with Ctrl+V. On a phone it opens the share sheet
+// with the card attached instead, so the X app gets the image itself.
+function cardBlob() {
   const v = cur.view;
   const s = simNow();
-  const days = daysOf(v);
+  return makeCard({ screenCanvas: screen.snapshot({ clean: true }), pet: { ...v, state: s, mood: moodOf(s) }, persona: cur.p, days: daysOf(v), ownerView: me.address && v.owner === me.address, bg: screen.bgRGB })
+    .then((c) => new Promise((r, j) => c.toBlob((b) => (b ? r(b) : j(new Error("no card"))), "image/png")));
+}
+async function shareSheet(e) {
+  const v = cur.view;
+  const fname = `chog-pet-${nameNum(v.id)}.png`;
   try {
-    const c = await makeCard({ screenCanvas: screen.snapshot({ clean: true }), pet: { ...v, state: s, mood: moodOf(s) }, persona: cur.p, days, ownerView: me.address && v.owner === me.address, bg: screen.bgRGB });
-    const fname = `chog-pet-${nameNum(v.id)}.png`;
-    const blob = await new Promise((r) => c.toBlob(r, "image/png"));
-    const file = blob && new File([blob], fname, { type: "image/png" });
-    if (file && matchMedia("(pointer: coarse)").matches && navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({ files: [file], text: `${v.name} on Chog Pet`, url: location.origin + `/?chog=${nameNum(v.id)}` });
-        return;
-      } catch (e) {
-        if (e && e.name === "AbortError") return;
-      }
-    }
-    const a = document.createElement("a");
-    a.download = fname;
-    a.href = URL.createObjectURL(blob);
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    toast("Card saved. Post it with the X button.");
-  } catch {
-    toast("Couldn't make the card.");
+    const file = new File([await cardBlob()], fname, { type: "image/png" });
+    if (!navigator.canShare || !navigator.canShare({ files: [file] })) return (location.href = e.currentTarget.href);
+    await navigator.share({ files: [file], text: shareText(v) + " " + location.origin + `/?chog=${nameNum(v.id)}` });
+  } catch (err) {
+    if (!err || err.name !== "AbortError") window.open($("xBtn").href, "_blank", "noopener");
   }
 }
-$("shareBtn").addEventListener("click", share);
+$("xBtn").addEventListener("click", (e) => {
+  if (!cur.view) return e.preventDefault();
+  sfx.click();
+  const phone = matchMedia("(pointer: coarse)").matches && navigator.canShare;
+  if (phone) {
+    e.preventDefault();
+    const href = e.currentTarget.href;
+    return shareSheet({ currentTarget: { href } });
+  }
+  // desktop: the link opens X as usual; the copy starts now, while this click still counts as the user's
+  if (!navigator.clipboard || !window.ClipboardItem) return;
+  const blob = cardBlob();
+  navigator.clipboard
+    .write([new ClipboardItem({ "image/png": blob })])
+    .then(() => toast(`Card copied. Paste it into the post with ${/Mac|iP/.test(navigator.platform) ? "⌘" : "Ctrl"}+V`, 6000))
+    .catch(() => {});
+});
 $("nameBtn").addEventListener("click", () => {
   $("nameIn").value = cur.view && cur.view.name !== cur.view.nftName ? cur.view.name : "";
   $("nameDlg").showModal();
