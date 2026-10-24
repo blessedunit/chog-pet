@@ -101,7 +101,6 @@ function build() {
       const n = Math.max(1, Math.floor((rw - 6) / (S + 5)));
       const sp = (rw - 6) / n;
       for (let i = 0; i < n; i++) {
-        if (r < rows - 1 && i > 0 && i < n - 1 && Math.random() < 0.08) continue; // the odd empty seat
         const x = R(rx + 3 + sp * i + sp / 2 + rnd(-1.5, 1.5));
         const near = side ? x : w - x; // distance from the screen, for the play wave
         fans.push({ t: ids.shift() || 1462, x, y: ty, near, off: Math.random() < 0.5 ? 0 : 0.5, stick: Math.random() < 0.3 ? STICK[Math.floor(Math.random() * 4)] : "", hop: -1 });
