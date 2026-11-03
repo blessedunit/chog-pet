@@ -447,10 +447,10 @@ async function board(env, now) {
 const WAIT_AFTER = 48 * 3600, AWAY_KEEP = 7 * 86400;
 async function town(env, ctx, now) {
   const cells = new Array(SUPPLY).fill("0");
-  const { results } = await env.DB.prepare("SELECT id, wb, away, updated FROM pets").all();
+  const { results } = await env.DB.prepare("SELECT id, wb, away, updated, json_extract(meta, '$.care') AS care FROM pets").all();
   let visited = 0, door = 0;
   for (const r of results) {
-    if (!(r.id >= 1 && r.id <= SUPPLY)) continue;
+    if (!(r.id >= 1 && r.id <= SUPPLY) || !r.care) continue; // looked at but never cared for: still "not met"
     visited++;
     const quiet = Math.max(0, now - r.updated);
     const est = r.wb - (4 * quiet) / 3600;
