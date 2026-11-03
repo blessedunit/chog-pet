@@ -95,7 +95,8 @@ export class Town {
     const out = [];
     for (let i = 0; i < 1969; i++) if (tab.has(this.cells[i] || "0")) out.push(i + 1);
     // most in need first; the quiet ones in a shuffled-but-stable order so it isn't always #1, #2, #3…
-    if (tab.k === "quiet") return out.sort((a, b) => ((a * 7919) % 1969) - ((b * 7919) % 1969));
+    // (ones never met before the quiet ones, most of whom have wandered off)
+    if (tab.k === "quiet") return out.sort((a, b) => (this.status(a) === "w") - (this.status(b) === "w") || ((a * 7919) % 1969) - ((b * 7919) % 1969));
     return out.sort((a, b) => ORDER[this.status(a)] - ORDER[this.status(b)]);
   }
 

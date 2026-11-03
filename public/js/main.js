@@ -1346,19 +1346,25 @@ const readyOnce = () => { introReady(); introReady = () => {}; };
   });
   const board = paintBoard();
   // first Chog: the link's > the last one this visitor picked > one of their own (signed in) > a random one that's home
-  const urlPick = !!id;
   const last = Number(store.get("pet.last")) || 0;
+  // their own last Chog typed or autocompleted in the address bar is a return visit, not a shared link
+  const typed = id && id === last && !document.referrer && performance.getEntriesByType("navigation")[0]?.type === "navigate";
+  const urlPick = !!id && !typed;
   if (!id && last >= 1 && last <= 1969) id = last;
-  // the last one wandered off meanwhile: open on one that's home instead of an empty room
+  const townIn = () => Promise.race([townReady, new Promise((r) => setTimeout(r, 1500))]);
+  // the last one wandered off meanwhile: open on one that's home instead of an empty room.
+  // "x" left this week; most of the "w" (quiet for 2+ days) have left too, so ask about those
+  let kept = !!id;
   if (id && !urlPick) {
-    await Promise.race([townReady, new Promise((r) => setTimeout(r, 1500))]);
-    if (town.status(id) === "x") id = 0;
+    await townIn();
+    const c = town.status(id);
+    if (c === "x" || (c === "w" && (await api.pet(id).catch(() => null))?.state?.away)) (id = 0), (kept = false);
   }
   if (!id) {
-    await Promise.race([townReady, new Promise((r) => setTimeout(r, 1500))]);
-    for (let i = 0; i < 40 && !id; i++) {
+    await townIn();
+    for (let i = 0; i < 80 && !id; i++) {
       const r = 1 + Math.floor(Math.random() * 1969);
-      if (town.status(r) !== "x" || i === 39) id = r;
+      if (!"xw".includes(town.status(r)) || i === 79) id = r;
     }
     bootPick = id;
   }
@@ -1366,6 +1372,6 @@ const readyOnce = () => { introReady(); introReady = () => {}; };
   if (me.token) {
     api.meCheck().then((r) => { me.holder = !!r.holder; }).catch((e) => { if (e.status === 401) { signOut(); paintWallet(); } });
     // a holder with nothing picked yet opens on their own Chog
-    showWallet(me.address, true, !urlPick && !last).catch(() => {});
+    showWallet(me.address, true, !urlPick && !kept).catch(() => {});
   }
 })();
