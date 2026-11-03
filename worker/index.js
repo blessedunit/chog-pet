@@ -230,7 +230,7 @@ async function loadPet(env, ctx, id, now) {
   const p = persona(id);
   let state, meta, moved = false;
   if (!row) {
-    state = lonely(id, now); // nobody has been by yet: the first visitor gets to rescue it
+    state = lonely(id, now); // nobody has cared for it yet: the first visitor gets to rescue it (no row until then)
     meta = newMeta(owner, since, now);
   } else {
     state = JSON.parse(row.state);
@@ -251,6 +251,8 @@ async function loadPet(env, ctx, id, now) {
     }
   }
   state = advance(state, p, now);
+  // only a Chog someone has cared for can wander off; one that was merely looked at stays home, waiting
+  if (state.away && !meta.care) state = lonely(id, now);
   return { id, p, state, meta, best: row ? row.best : 0, ver: row ? row.ver || 0 : -1, isNew: !row, moved };
 }
 
@@ -624,7 +626,8 @@ async function api(req, env, ctx, url) {
       let fest = false;
       if (!pet.isNew && !(pet.meta.stickers || []).includes("festival")) fest = await festDue(env, id).catch(() => false);
       if (fest) award(pet.meta, { a: "fest", fest: true, now });
-      if ((pet.isNew || pet.moved || fest) && (await savePet(env, pet, now)) && pet.moved) await logMove(env, pet, now);
+      // just looking writes nothing: a Chog gets its row with the first care
+      if ((pet.moved || fest) && (await savePet(env, pet, now)) && pet.moved) await logMove(env, pet, now);
       const v = url.searchParams.get("viewer");
       let vk = null;
       if (v && v.startsWith("0x")) vk = await readToken(env, bearer(req));
@@ -694,7 +697,7 @@ async function api(req, env, ctx, url) {
             r.record = true;
           }
         }
-        if (!r.ok && !pet.isNew && !pet.moved) break;
+        if (!r.ok && !pet.moved) break;
         if (await savePet(env, pet, now)) break;
         if (tries >= 2) {
           if (owned) await econReturn(env, who, b.item, now);
