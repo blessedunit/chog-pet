@@ -29,7 +29,6 @@ const ACTIONS = [
   { k: "clean", icon: "i_clean", label: "Bath" },
   { k: "lights", icon: "i_lights", label: "Lights" },
   { k: "love", icon: "i_love", label: "Pet" },
-  { k: "card", icon: "i_card", label: "Card", hint: "Copy this Chog's card and post it on X" },
 ];
 const MOOD_LABEL = { happy: "happy", content: "fine", hungry: "hungry", bored: "bored", sleepy: "sleepy", stinky: "stinky", miserable: "sad", asleep: "asleep", away: "away", lonely: "lonely" };
 
@@ -133,8 +132,7 @@ function buildIcons() {
     const b = document.createElement("button");
     b.className = "ico";
     b.dataset.i = i;
-    b.setAttribute("aria-label", a.hint || a.label);
-    if (a.hint) b.title = a.hint;
+    b.setAttribute("aria-label", a.label);
     b.appendChild(toCanvas(a.icon, 2, "#efe8ff"));
     const lbl = document.createElement("span");
     lbl.className = "lbl";
@@ -264,7 +262,6 @@ function chooseFood() {
 // ---------- actions ----------
 function run(k) {
   if (!cur.p || cur.busy || game) return;
-  if (k === "card") return $("xBtn").click(); // same as the button under the screen: copies the card, opens a ready post
   const left = (cur.cool[k] || 0) - now();
   if (left > 0) {
     if (k === "love") {
@@ -445,7 +442,7 @@ document.addEventListener("keydown", (e) => {
   if (m) {
     e.preventDefault();
     if (!e.repeat) key(m, true);
-  } else if (/^[1-6]$/.test(e.key) && !game && !menuOpen) {
+  } else if (/^[1-5]$/.test(e.key) && !game && !menuOpen) {
     setSel(Number(e.key) - 1);
     run(ACTIONS[sel].k);
   }
