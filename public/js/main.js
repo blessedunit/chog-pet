@@ -29,7 +29,7 @@ const ACTIONS = [
   { k: "clean", icon: "i_clean", label: "Bath" },
   { k: "lights", icon: "i_lights", label: "Lights" },
   { k: "love", icon: "i_love", label: "Pet" },
-  { k: "card", icon: "i_card", label: "Card" },
+  { k: "card", icon: "i_card", label: "Card", hint: "Copy this Chog's card and post it on X" },
 ];
 const MOOD_LABEL = { happy: "happy", content: "fine", hungry: "hungry", bored: "bored", sleepy: "sleepy", stinky: "stinky", miserable: "sad", asleep: "asleep", away: "away", lonely: "lonely" };
 
@@ -133,7 +133,8 @@ function buildIcons() {
     const b = document.createElement("button");
     b.className = "ico";
     b.dataset.i = i;
-    b.setAttribute("aria-label", a.label);
+    b.setAttribute("aria-label", a.hint || a.label);
+    if (a.hint) b.title = a.hint;
     b.appendChild(toCanvas(a.icon, 2, "#efe8ff"));
     const lbl = document.createElement("span");
     lbl.className = "lbl";
@@ -148,7 +149,7 @@ function buildIcons() {
       if (game) return toast("Finish the round first, or tap Quit.");
       if (menuOpen) closeMenu();
       setSel(i);
-      if (a.k === "feed" || a.k === "card") sfx.click();
+      if (a.k === "feed") sfx.click();
       run(a.k);
     });
     (i < 3 ? top : bot).appendChild(b);
@@ -263,7 +264,7 @@ function chooseFood() {
 // ---------- actions ----------
 function run(k) {
   if (!cur.p || cur.busy || game) return;
-  if (k === "card") return share();
+  if (k === "card") return $("xBtn").click(); // same as the button under the screen: copies the card, opens a ready post
   const left = (cur.cool[k] || 0) - now();
   if (left > 0) {
     if (k === "love") {
